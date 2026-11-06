@@ -29,4 +29,4 @@
 | RAG 평가 | LLM · RAG | 지식기반 검색 RAG | [RAG 평가](llm/rag-evaluation.md) |
 | NL2SQL | LLM · RAG | Smart Factory | [NL2SQL](llm/nl2sql.md) |
 | VLM | LLM · RAG | 지식기반 검색 RAG, 숏폼 영상 생성 | [VLM](llm/vlm.md) |
-| LLM API | LLM · RAG | 지식기반 검색 RAG, 데이터 수집 API · ETL, Smart Factory, 숏폼 영상 생성, 올리브영 클론, LLM & Agent 실습 | [LLM API](llm/llm-apis.md) |
+| LLM API | LLM · RAG | 지식기반 검색 RAG, 데이터 수집 API · ETL, Smart Factory, 숏폼 영상 생성, LLM & Agent 실습 | [LLM API](llm/llm-apis.md) |

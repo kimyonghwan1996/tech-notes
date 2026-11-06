@@ -89,8 +89,7 @@ def cached_call(model: str, prompt_version: str, text: str, call):
     - Gemini 2.5 Flash로 레퍼런스 영상 분석과 스크립트·훅 생성을 했다. 훅은 7가지 유형 중 하나를 랜덤으로 고르고 temperature 1.2로 같은 입력에도 매번 다른 훅이 나오게 했다.
     - Gemini 2.5 Flash Image로 씬별 이미지를 만들고, Veo 3.1 계열로 비디오 클립을 선택적으로 생성했다. `VEO_MODEL`을 비워두면 호출하지 않고, Veo quota 초과 시 MoviePy Ken Burns 이미지 영상으로 대체한다.
     - 나레이션은 Edge-TTS로 만들고, API 키는 `.env`의 `GEMINI_API_KEY`에만 둔다.
-- 올리브영 클론 프로젝트 (부트캠프 실습): AI 챗봇에서 DB에서 조회한 상품 정보를 프롬프트에 포함해 AWS Bedrock InvokeModel로 Claude를 직접 호출하는 구성을 다뤘다.
-- LLM & Agent 실습 (`ds` 저장소): `02_gemini.py`, `03_claude.py`, `chat_system.py`, `chat_stream_usage.py`, `count_tokens.py`, `prompt_techniques.py` 등으로 Gemini·Claude 호출, system 프롬프트, 스트리밍과 사용량, 토큰 계산, 프롬프트 기법을 실습했다.
+- LLM & Agent 실습 (`ds` 저장소): `02_gemini.py`, `03_claude.py`, `chat_stream_usage.py`, `count_tokens.py`, `prompt_techniques.py` 파일을 두고 langchain·langchain-openai·langgraph를 의존성으로 설치했다.
 
 ## 장단점과 함정 {#pros-cons}
 
