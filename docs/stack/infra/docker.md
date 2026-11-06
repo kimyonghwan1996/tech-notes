@@ -47,21 +47,27 @@ flowchart LR
 ```dockerfile
 FROM python:3.12-slim
 WORKDIR /app
-COPY requirements.txt .                 # 의존성 목록만 먼저 복사
-RUN pip install --no-cache-dir -r requirements.txt   # 목록이 안 바뀌면 캐시 재사용
-COPY . .                                # 소스는 마지막에
+# 의존성 목록만 먼저 복사
+COPY requirements.txt .
+# 목록이 안 바뀌면 캐시 재사용
+RUN pip install --no-cache-dir -r requirements.txt
+# 소스는 마지막에
+COPY . .
 CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
 ```
 
 **Multi-stage build**
 
 ```dockerfile
-FROM eclipse-temurin:11-jdk-jammy AS builder   # 1단계: 빌드 도구 포함
+# 1단계: 빌드 도구 포함
+FROM eclipse-temurin:11-jdk-jammy AS builder
 WORKDIR /build
 COPY . .
-RUN sbt assembly                                # Fat JAR 생성
+# Fat JAR 생성
+RUN sbt assembly
 
-FROM apache/spark:3.5.0                         # 2단계: 실행에 필요한 것만
+# 2단계: 실행에 필요한 것만
+FROM apache/spark:3.5.0
 COPY --from=builder /build/target/scala-2.12/app.jar /app/app.jar
 CMD ["/opt/spark/bin/spark-submit", "/app/app.jar"]
 ```
