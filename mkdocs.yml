@@ -1,0 +1,48 @@
+site_name: Tech Notes
+theme:
+  name: material
+  language: ko
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.top
+    - search.highlight
+    - content.code.copy
+    - toc.follow
+  palette:
+    - scheme: default
+      primary: indigo
+      toggle:
+        icon: material/brightness-7
+        name: 다크 모드로 전환
+    - scheme: slate
+      primary: indigo
+      toggle:
+        icon: material/brightness-4
+        name: 라이트 모드로 전환
+extra_javascript:
+  - javascripts/marks.js
+extra_css:
+  - stylesheets/marks.css
+markdown_extensions:
+  - attr_list
+  - md_in_html
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tabbed:
+      alternate_style: true
+  - tables
+  - toc:
+      permalink: true
+exclude_docs: |
+  superpowers/
+nav:
+  - 기술 스택: stack/index.md
+  - 학습 워크플로우: learn/index.md
+  - 내 프로젝트: projects/index.md
+  - 예상질문: interview/index.md
