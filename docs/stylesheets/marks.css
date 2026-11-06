@@ -1,0 +1,6 @@
+.tn-marks{display:inline-flex;gap:.25rem;margin-left:.5rem;vertical-align:middle}
+.tn-mark{min-height:44px;min-width:44px;padding:0 .5rem;font-size:.75rem;border:1px solid var(--md-default-fg-color--lighter);border-radius:4px;background:transparent;color:var(--md-default-fg-color--light);cursor:pointer}
+.tn-mark[aria-pressed=true][data-state=ok]{background:var(--md-code-hl-string-color);color:#fff}
+.tn-mark[aria-pressed=true][data-state=confused]{background:var(--md-code-hl-number-color);color:#fff}
+.tn-mark[aria-pressed=true][data-state=important]{background:var(--md-primary-fg-color);color:#fff}
+@media (max-width:600px){.tn-marks{display:flex;margin:.25rem 0 0}}

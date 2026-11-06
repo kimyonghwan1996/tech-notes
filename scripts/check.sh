@@ -11,4 +11,5 @@ python3 scripts/extract_mermaid.py docs/ /tmp/tn-mermaid
 for f in /tmp/tn-mermaid/*.mmd; do
   npx -y @mermaid-js/mermaid-cli -p scripts/puppeteer.json -i "$f" -o /tmp/tn-mermaid/out.svg -q >/dev/null
 done
+node --test tests/
 echo "check ok"
