@@ -107,10 +107,26 @@
     var exp = document.getElementById('tn-export');
     if (exp) {
       exp.addEventListener('click', function () {
-        navigator.clipboard.writeText(exportText(marks)).then(function () {
-          exp.textContent = '복사됨';
+        var text = exportText(marks);
+        function done(ok) {
+          exp.textContent = ok ? '복사됨' : '복사 실패';
           setTimeout(function () { exp.textContent = '표시 내보내기'; }, 2000);
-        });
+        }
+        function fallback() {
+          var ta = document.createElement('textarea');
+          ta.value = text;
+          ta.setAttribute('aria-label', '내보내기 텍스트');
+          ta.style.cssText = 'display:block;width:100%;min-height:8rem;margin-top:.5rem';
+          exp.insertAdjacentElement('afterend', ta);
+          ta.select();
+          var ok = false;
+          try { ok = document.execCommand('copy'); } catch (e) {}
+          if (ok) ta.remove(); // on failure the textarea stays so the user can copy by hand
+          done(ok);
+        }
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(text).then(function () { done(true); }, fallback);
+        } else fallback();
       });
     }
   }
