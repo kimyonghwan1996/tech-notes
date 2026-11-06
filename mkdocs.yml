@@ -80,7 +80,12 @@ nav:
           - stack/llm/nl2sql.md
           - stack/llm/vlm.md
           - stack/llm/llm-apis.md
-  - 학습 워크플로우: learn/index.md
+  - 학습 워크플로우:
+      - learn/index.md
+      - learn/de-pipeline.md
+      - learn/dw-modeling.md
+      - learn/rag.md
+      - learn/agent.md
   - 내 프로젝트: projects/index.md
   - 예상질문:
       - interview/index.md
