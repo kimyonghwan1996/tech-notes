@@ -106,18 +106,24 @@
 
     var exp = document.getElementById('tn-export');
     if (exp) {
+      var timer;
       exp.addEventListener('click', function () {
         var text = exportText(marks);
         function done(ok) {
+          clearTimeout(timer);
           exp.textContent = ok ? '복사됨' : '복사 실패';
-          setTimeout(function () { exp.textContent = '표시 내보내기'; }, 2000);
+          timer = setTimeout(function () { exp.textContent = '표시 내보내기'; }, 2000);
         }
         function fallback() {
-          var ta = document.createElement('textarea');
+          var ta = document.getElementById('tn-export-text');
+          if (!ta) {
+            ta = document.createElement('textarea');
+            ta.id = 'tn-export-text';
+            ta.setAttribute('aria-label', '내보내기 텍스트');
+            ta.style.cssText = 'display:block;width:100%;min-height:8rem;margin-top:.5rem';
+            exp.insertAdjacentElement('afterend', ta);
+          }
           ta.value = text;
-          ta.setAttribute('aria-label', '내보내기 텍스트');
-          ta.style.cssText = 'display:block;width:100%;min-height:8rem;margin-top:.5rem';
-          exp.insertAdjacentElement('afterend', ta);
           ta.select();
           var ok = false;
           try { ok = document.execCommand('copy'); } catch (e) {}
