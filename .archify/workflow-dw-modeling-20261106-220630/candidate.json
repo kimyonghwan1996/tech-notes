@@ -1,0 +1,294 @@
+{
+  "schema_version": 2,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "데이터 웨어하우스 모델링 흐름",
+    "subtitle": "비즈니스 질문에서 KPI 서빙까지 7단계",
+    "locale": "ko",
+    "quality_profile": "showcase",
+    "output": "docs/learn/flows/dw-modeling.html",
+    "legend": {
+      "entries": {
+        "external": {
+          "label": "질문 · 소비자"
+        },
+        "backend": {
+          "label": "설계 단계"
+        },
+        "database": {
+          "label": "계층 · 테이블"
+        },
+        "security": {
+          "label": "품질 게이트"
+        },
+        "frontend": {
+          "label": "서빙"
+        }
+      }
+    },
+    "views": [
+      {
+        "id": "v-q",
+        "label": "1-2. 질문과 그레인",
+        "focus": [
+          "question",
+          "grain"
+        ],
+        "note": "질문이 먼저다. 한 행이 무엇을 뜻하는지(그레인)를 정하면 나머지가 따라온다."
+      },
+      {
+        "id": "v-design",
+        "label": "3-4. Dim · Fact · SCD",
+        "focus": [
+          "dimfact",
+          "scd"
+        ],
+        "note": "차원은 설명, 사실은 측정. 바뀌는 속성은 SCD 유형을 정한다."
+      },
+      {
+        "id": "v-layers",
+        "label": "5. 계층 구현",
+        "focus": [
+          "raw",
+          "staging",
+          "marts"
+        ],
+        "note": "Raw는 원본, Staging은 타입·정제, Marts는 Dim/Fact."
+      },
+      {
+        "id": "v-quality",
+        "label": "6. 품질 검사",
+        "focus": [
+          "quality",
+          "marts"
+        ],
+        "note": "유니크 키, 참조 무결성, 유효기간 겹침을 확인한다."
+      },
+      {
+        "id": "v-kpi",
+        "label": "7. KPI 서빙",
+        "focus": [
+          "kpi",
+          "question"
+        ],
+        "note": "KPI가 처음 질문에 답하는지 확인하고, 새 질문이 생기면 처음으로 돌아간다."
+      }
+    ]
+  },
+  "lanes": [
+    {
+      "id": "biz",
+      "label": "비즈니스"
+    },
+    {
+      "id": "design",
+      "label": "설계"
+    },
+    {
+      "id": "layers",
+      "label": "계층 구현"
+    },
+    {
+      "id": "serve",
+      "label": "품질 · 서빙"
+    }
+  ],
+  "phases": [
+    {
+      "id": "p1",
+      "label": "정의 · 설계",
+      "fromCol": 0,
+      "toCol": 2
+    },
+    {
+      "id": "p2",
+      "label": "계층 구현",
+      "fromCol": 3,
+      "toCol": 4,
+      "variant": "emphasis"
+    },
+    {
+      "id": "p3",
+      "label": "검증 · 서빙",
+      "fromCol": 5,
+      "toCol": 5,
+      "variant": "dashed"
+    }
+  ],
+  "mainPath": [
+    "question",
+    "grain",
+    "dimfact",
+    "scd",
+    "raw",
+    "staging",
+    "marts",
+    "quality",
+    "kpi"
+  ],
+  "nodes": [
+    {
+      "id": "question",
+      "lane": "biz",
+      "col": 0,
+      "type": "external",
+      "label": "1 비즈니스 질문",
+      "sublabel": "주간 활성 사용자는?",
+      "icon": "flag"
+    },
+    {
+      "id": "grain",
+      "lane": "design",
+      "col": 0,
+      "type": "backend",
+      "label": "2 그레인 정의",
+      "sublabel": "한 행 = 이벤트 1건",
+      "tag": "가장 중요한 결정"
+    },
+    {
+      "id": "dimfact",
+      "lane": "design",
+      "col": 1,
+      "type": "backend",
+      "label": "3 Dim · Fact 설계",
+      "sublabel": "스타 스키마 · 대리키"
+    },
+    {
+      "id": "scd",
+      "lane": "design",
+      "col": 2,
+      "type": "backend",
+      "label": "4 SCD 결정",
+      "sublabel": "Type 1 · 2 · 3",
+      "tag": "이력 보존 여부"
+    },
+    {
+      "id": "raw",
+      "lane": "layers",
+      "col": 2,
+      "type": "database",
+      "label": "Raw",
+      "sublabel": "원본 JSONL · jsonb"
+    },
+    {
+      "id": "staging",
+      "lane": "layers",
+      "col": 3,
+      "type": "database",
+      "label": "Staging",
+      "sublabel": "타입 변환 · 중복 제거"
+    },
+    {
+      "id": "marts",
+      "lane": "layers",
+      "col": 4,
+      "type": "database",
+      "label": "Marts",
+      "sublabel": "dim_user · fact_event",
+      "tag": "SCD2 적용"
+    },
+    {
+      "id": "quality",
+      "lane": "serve",
+      "col": 4,
+      "type": "security",
+      "label": "6 품질 검사",
+      "sublabel": "유니크 · 참조 · 유효기간",
+      "tag": "게이트"
+    },
+    {
+      "id": "kpi",
+      "lane": "serve",
+      "col": 5,
+      "type": "frontend",
+      "label": "7 KPI 서빙",
+      "sublabel": "WAU · 전환율 · 리텐션"
+    }
+  ],
+  "edges": [
+    {
+      "id": "e1",
+      "from": "question",
+      "to": "grain",
+      "label": "질문 → 행 단위"
+    },
+    {
+      "id": "e2",
+      "from": "grain",
+      "to": "dimfact"
+    },
+    {
+      "id": "e3",
+      "from": "dimfact",
+      "to": "scd",
+      "label": "바뀌는 속성은?"
+    },
+    {
+      "id": "e4",
+      "from": "scd",
+      "to": "raw",
+      "label": "5 계층 구현",
+      "variant": "emphasis"
+    },
+    {
+      "id": "e5",
+      "from": "raw",
+      "to": "staging",
+      "label": "정제"
+    },
+    {
+      "id": "e6",
+      "from": "staging",
+      "to": "marts",
+      "label": "모델링",
+      "variant": "emphasis"
+    },
+    {
+      "id": "e7",
+      "from": "marts",
+      "to": "quality",
+      "label": "검사"
+    },
+    {
+      "id": "e8",
+      "from": "quality",
+      "to": "kpi",
+      "label": "통과",
+      "variant": "emphasis"
+    },
+    {
+      "id": "e9",
+      "from": "quality",
+      "to": "staging",
+      "label": "실패 시 수정",
+      "variant": "security",
+      "role": "error"
+    },
+    {
+      "id": "e11",
+      "from": "kpi",
+      "to": "question",
+      "label": "새 질문",
+      "variant": "dashed",
+      "role": "return"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "꼭 지킬 것",
+      "items": [
+        "그레인을 먼저 문장으로 적는다",
+        "Fact는 이벤트 시점의 차원 상태와 조인한다 (SCD2 유효기간)"
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "흔한 실수",
+      "items": [
+        "유효기간 경계에 <= 와 < 를 섞어 행이 두 배로 늘어남",
+        "배치를 다시 돌리면 집계가 중복되는 비멱등 적재"
+      ]
+    }
+  ]
+}

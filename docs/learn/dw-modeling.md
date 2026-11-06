@@ -4,16 +4,9 @@
 
 ## 전체 흐름 { #overview }
 
-```mermaid
-flowchart LR
-    A[1 비즈니스 질문] --> B[2 그레인 정의]
-    B --> C[3 Dim 및 Fact 설계]
-    C --> D[4 SCD 결정]
-    D --> E[5 계층 구현 Raw Staging Marts]
-    E --> F[6 품질 검사]
-    F --> G[7 KPI 서빙]
-    G -.->|새 질문| A
-```
+<iframe src="flows/dw-modeling.html" title="데이터 웨어하우스 모델링 흐름 인터랙티브 다이어그램" loading="lazy" style="width:100%;height:640px;border:1px solid var(--md-default-fg-color--lightest);border-radius:6px;background:transparent"></iframe>
+
+[전체 화면으로 열기](flows/dw-modeling.html){ target=_blank } · 단계 상자를 클릭하면 연결이 강조되고, 위쪽 보기 메뉴로 단계 묶음을 차례로 따라갈 수 있습니다.
 
 1~4단계는 종이 위의 설계, 5~7단계는 구현과 운영이다. 설계 단계에서 그레인을 잘못 잡으면 구현 뒤에 고치기가 가장 비싸다.
 

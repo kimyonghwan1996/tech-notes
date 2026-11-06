@@ -4,18 +4,9 @@
 
 ## 전체 흐름 { #overview }
 
-```mermaid
-flowchart TD
-    A[1 문서 수집] --> B[2 파싱 PDF HTML 표]
-    B --> C[3 청킹]
-    C --> D[4 임베딩]
-    D --> E[5 인덱스 설계]
-    E --> F[6 검색 하이브리드]
-    F --> G[7 생성 프롬프트]
-    G --> H[8 평가]
-    H --> I[9 운영 캐시 재처리]
-    H -.->|점수 낮음이면 파싱 청킹 검색 재검토| B
-```
+<iframe src="flows/rag.html" title="RAG 구축 흐름 인터랙티브 다이어그램" loading="lazy" style="width:100%;height:640px;border:1px solid var(--md-default-fg-color--lightest);border-radius:6px;background:transparent"></iframe>
+
+[전체 화면으로 열기](flows/rag.html){ target=_blank } · 단계 상자를 클릭하면 연결이 강조되고, 위쪽 보기 메뉴로 단계 묶음을 차례로 따라갈 수 있습니다.
 
 1~5단계는 색인 쪽(오프라인), 6~7단계는 질문이 들어올 때 도는 쪽(온라인)이다. 답이 틀리면 대개 생성보다 앞 단계, 특히 파싱·청킹·검색에서 원인이 나온다. 그래서 평가를 마지막이 아니라 처음부터 같이 만든다.
 

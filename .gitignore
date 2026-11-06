@@ -3,3 +3,8 @@ site/
 node_modules/
 .DS_Store
 __pycache__/
+
+# archify receipts (keep only candidates)
+.archify/*/*
+!.archify/*/candidate.json
+docs/learn/flows/*.json

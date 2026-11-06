@@ -43,6 +43,7 @@ validation:
   anchors: warn
 exclude_docs: |
   superpowers/
+  learn/flows/*.json
 nav:
   - 기술 스택:
       - stack/index.md

@@ -4,16 +4,9 @@
 
 ## 전체 흐름 { #overview }
 
-```mermaid
-flowchart LR
-    A[1 요구 정의] --> B[2 수집]
-    B --> C[3 적재 Raw]
-    C --> D[4 변환]
-    D --> E[5 오케스트레이션]
-    E --> F[6 품질 및 모니터링]
-    F --> G[7 서빙]
-    F -.->|이상 발견 시 재처리| D
-```
+<iframe src="flows/de-pipeline.html" title="데이터 파이프라인 구축 흐름 인터랙티브 다이어그램" loading="lazy" style="width:100%;height:640px;border:1px solid var(--md-default-fg-color--lightest);border-radius:6px;background:transparent"></iframe>
+
+[전체 화면으로 열기](flows/de-pipeline.html){ target=_blank } · 단계 상자를 클릭하면 연결이 강조되고, 위쪽 보기 메뉴로 단계 묶음을 차례로 따라갈 수 있습니다.
 
 순서대로 한 번에 끝나는 일은 드물다. 서빙 단계에서 쓰는 사람이 생기면 요구가 다시 바뀌고, 품질 검사에서 걸린 문제는 변환이나 수집으로 되돌아간다. 처음에는 작은 소스 하나로 1~7단계를 끝까지 한 바퀴 돌려 보고 넓히는 편이 안전하다.
 

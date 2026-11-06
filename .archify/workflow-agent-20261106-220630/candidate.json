@@ -1,0 +1,323 @@
+{
+  "schema_version": 2,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "에이전트 구축 흐름",
+    "subtitle": "목표·도구 정의에서 관측·평가까지 6단계",
+    "locale": "ko",
+    "quality_profile": "showcase",
+    "output": "docs/learn/flows/agent.html",
+    "legend": {
+      "entries": {
+        "external": {
+          "label": "사용자 · 목표"
+        },
+        "backend": {
+          "label": "설계 · 계획"
+        },
+        "cloud": {
+          "label": "LLM 호출"
+        },
+        "messagebus": {
+          "label": "도구"
+        },
+        "security": {
+          "label": "검증 게이트"
+        },
+        "database": {
+          "label": "상태 · 로그"
+        }
+      }
+    },
+    "views": [
+      {
+        "id": "v-define",
+        "label": "1. 목표 · 도구 정의",
+        "focus": [
+          "goal",
+          "tools"
+        ],
+        "note": "성공 기준을 문장으로, 도구는 입력·출력 스키마와 권한을 명시."
+      },
+      {
+        "id": "v-state",
+        "label": "2. 상태 · 그래프",
+        "focus": [
+          "state",
+          "planner"
+        ],
+        "note": "무엇을 기억할지(state)와 노드·엣지·체크포인트를 정한다."
+      },
+      {
+        "id": "v-loop",
+        "label": "3-4. 계획과 실행",
+        "focus": [
+          "planner",
+          "router",
+          "exec",
+          "llm"
+        ],
+        "note": "LLM이 다음 행동을 고르고 라우터가 도구를 호출한다."
+      },
+      {
+        "id": "v-verify",
+        "label": "5. 검증 · 재시도",
+        "focus": [
+          "verify",
+          "planner",
+          "result"
+        ],
+        "note": "결과를 스키마·규칙으로 검사. 실패하면 오류를 담아 다시 계획."
+      },
+      {
+        "id": "v-observe",
+        "label": "6. 관측 · 평가",
+        "focus": [
+          "trace",
+          "evaluate",
+          "goal"
+        ],
+        "note": "모든 호출을 추적하고 평가셋으로 성공률·비용을 본다."
+      }
+    ]
+  },
+  "lanes": [
+    {
+      "id": "design",
+      "label": "설계"
+    },
+    {
+      "id": "runtime",
+      "label": "실행 루프"
+    },
+    {
+      "id": "guard",
+      "label": "검증 · 관측",
+      "variant": "exception"
+    },
+    {
+      "id": "out",
+      "label": "결과 · 평가"
+    }
+  ],
+  "phases": [
+    {
+      "id": "p1",
+      "label": "정의 · 설계",
+      "fromCol": 0,
+      "toCol": 2
+    },
+    {
+      "id": "p2",
+      "label": "계획 → 실행 → 검증 루프",
+      "fromCol": 3,
+      "toCol": 5,
+      "variant": "emphasis"
+    }
+  ],
+  "mainPath": [
+    "goal",
+    "tools",
+    "state",
+    "planner",
+    "router",
+    "exec",
+    "verify",
+    "result"
+  ],
+  "nodes": [
+    {
+      "id": "goal",
+      "lane": "design",
+      "col": 0,
+      "type": "external",
+      "label": "1 목표 정의",
+      "sublabel": "성공 기준 · 제약",
+      "icon": "flag"
+    },
+    {
+      "id": "tools",
+      "lane": "design",
+      "col": 1,
+      "type": "messagebus",
+      "label": "도구 정의",
+      "sublabel": "입력 · 출력 스키마 · 권한"
+    },
+    {
+      "id": "state",
+      "lane": "design",
+      "col": 2,
+      "type": "database",
+      "label": "2 상태 · 그래프",
+      "sublabel": "state · 노드 · 체크포인트"
+    },
+    {
+      "id": "planner",
+      "lane": "runtime",
+      "col": 3,
+      "type": "backend",
+      "label": "3 계획",
+      "sublabel": "다음 행동 선택",
+      "tag": "LLM 판단"
+    },
+    {
+      "id": "llm",
+      "lane": "design",
+      "col": 3,
+      "type": "cloud",
+      "label": "LLM",
+      "sublabel": "tool use · 구조화 출력"
+    },
+    {
+      "id": "router",
+      "lane": "runtime",
+      "col": 4,
+      "type": "backend",
+      "label": "라우팅",
+      "sublabel": "도구 · 종료 분기"
+    },
+    {
+      "id": "exec",
+      "lane": "runtime",
+      "col": 5,
+      "type": "messagebus",
+      "label": "4 도구 실행",
+      "sublabel": "SQL · 검색 · API",
+      "tag": "타임아웃 · 권한"
+    },
+    {
+      "id": "verify",
+      "lane": "guard",
+      "col": 5,
+      "type": "security",
+      "label": "5 검증",
+      "sublabel": "스키마 · 규칙 · 재시도 한도",
+      "tag": "게이트"
+    },
+    {
+      "id": "result",
+      "lane": "out",
+      "col": 5,
+      "type": "external",
+      "label": "결과 반환",
+      "sublabel": "답 + 근거 + 비용",
+      "icon": "person"
+    },
+    {
+      "id": "trace",
+      "lane": "guard",
+      "col": 4,
+      "type": "database",
+      "label": "6 관측",
+      "sublabel": "호출 추적 · 토큰 · 지연"
+    },
+    {
+      "id": "evaluate",
+      "lane": "out",
+      "col": 4,
+      "type": "security",
+      "label": "평가",
+      "sublabel": "성공률 · 비용 · 평가셋"
+    }
+  ],
+  "edges": [
+    {
+      "id": "e1",
+      "from": "goal",
+      "to": "tools"
+    },
+    {
+      "id": "e2",
+      "from": "tools",
+      "to": "state"
+    },
+    {
+      "id": "e3",
+      "from": "state",
+      "to": "planner",
+      "label": "초기 상태",
+      "variant": "emphasis"
+    },
+    {
+      "id": "e4",
+      "from": "planner",
+      "to": "llm",
+      "label": "상태 + 도구 목록",
+      "variant": "dashed",
+      "role": "branch"
+    },
+    {
+      "id": "e5",
+      "from": "planner",
+      "to": "router",
+      "label": "행동"
+    },
+    {
+      "id": "e6",
+      "from": "router",
+      "to": "exec",
+      "label": "도구 호출",
+      "variant": "emphasis"
+    },
+    {
+      "id": "e7",
+      "from": "exec",
+      "to": "verify",
+      "label": "결과"
+    },
+    {
+      "id": "e8",
+      "from": "verify",
+      "to": "result",
+      "label": "통과",
+      "variant": "emphasis"
+    },
+    {
+      "id": "e9",
+      "from": "verify",
+      "to": "planner",
+      "label": "실패 → 오류 담아 재계획",
+      "variant": "security",
+      "role": "error"
+    },
+    {
+      "id": "e10",
+      "from": "exec",
+      "to": "trace",
+      "label": "기록",
+      "variant": "dashed",
+      "role": "async"
+    },
+    {
+      "id": "e11",
+      "from": "trace",
+      "to": "evaluate"
+    },
+    {
+      "id": "e12",
+      "from": "evaluate",
+      "to": "goal",
+      "label": "개선 → 목표 · 도구 수정",
+      "variant": "dashed",
+      "role": "return"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "꼭 지킬 것",
+      "items": [
+        "재시도 한도와 종료 조건을 코드로 고정",
+        "도구 권한은 최소로, 쓰기 도구는 확인 게이트"
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "흔한 실수",
+      "items": [
+        "같은 프롬프트로 재시도해 같은 실패 반복",
+        "추적 없이 운영해 비용과 실패 원인을 모름"
+      ]
+    }
+  ]
+}

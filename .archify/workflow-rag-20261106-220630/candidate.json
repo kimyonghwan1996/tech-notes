@@ -1,0 +1,317 @@
+{
+  "schema_version": 2,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "RAG 구축 흐름",
+    "subtitle": "문서 수집에서 평가·운영까지 9단계",
+    "locale": "ko",
+    "quality_profile": "showcase",
+    "output": "docs/learn/flows/rag.html",
+    "legend": {
+      "entries": {
+        "external": {
+          "label": "문서 · 사용자"
+        },
+        "backend": {
+          "label": "처리 단계"
+        },
+        "database": {
+          "label": "인덱스 · 캐시"
+        },
+        "cloud": {
+          "label": "LLM 호출"
+        },
+        "security": {
+          "label": "평가 게이트"
+        }
+      }
+    },
+    "views": [
+      {
+        "id": "v-ingest",
+        "label": "1-2. 수집과 파싱",
+        "focus": [
+          "collect",
+          "parse"
+        ],
+        "note": "PDF·HTML·표를 텍스트로. 표 구조와 소제목을 잃지 않는 것이 핵심."
+      },
+      {
+        "id": "v-chunk",
+        "label": "3-4. 청킹과 임베딩",
+        "focus": [
+          "chunk",
+          "embed"
+        ],
+        "note": "표는 행 단위로 나누고 머리글을 반복. 임베딩 모델과 양자화를 정한다."
+      },
+      {
+        "id": "v-index",
+        "label": "5-6. 인덱스와 검색",
+        "focus": [
+          "index",
+          "retrieve",
+          "query"
+        ],
+        "note": "text + dense_vector 매핑. BM25와 벡터를 RRF로 합친다."
+      },
+      {
+        "id": "v-gen",
+        "label": "7. 생성",
+        "focus": [
+          "retrieve",
+          "generate"
+        ],
+        "note": "근거 청크를 프롬프트에 넣고 출처를 함께 반환한다."
+      },
+      {
+        "id": "v-eval",
+        "label": "8-9. 평가와 운영",
+        "focus": [
+          "evalset",
+          "evaluate",
+          "cache",
+          "parse"
+        ],
+        "note": "Hit@k·MRR·정답률을 자동 채점. 점수가 낮으면 파싱·청킹부터 재검토."
+      }
+    ]
+  },
+  "lanes": [
+    {
+      "id": "offline",
+      "label": "오프라인 적재"
+    },
+    {
+      "id": "online",
+      "label": "온라인 질의"
+    },
+    {
+      "id": "eval",
+      "label": "평가 · 운영",
+      "variant": "exception"
+    },
+    {
+      "id": "ops",
+      "label": "운영"
+    }
+  ],
+  "phases": [
+    {
+      "id": "p1",
+      "label": "수집 · 파싱 · 청킹",
+      "fromCol": 0,
+      "toCol": 2
+    },
+    {
+      "id": "p2",
+      "label": "임베딩 · 인덱스 · 검색",
+      "fromCol": 3,
+      "toCol": 4,
+      "variant": "emphasis"
+    },
+    {
+      "id": "p3",
+      "label": "생성 · 평가 · 운영",
+      "fromCol": 5,
+      "toCol": 5,
+      "variant": "dashed"
+    }
+  ],
+  "mainPath": [
+    "collect",
+    "parse",
+    "chunk",
+    "embed",
+    "index",
+    "retrieve",
+    "generate"
+  ],
+  "nodes": [
+    {
+      "id": "collect",
+      "lane": "offline",
+      "col": 0,
+      "type": "backend",
+      "label": "1 문서 수집",
+      "sublabel": "PDF · HTML · 표 · 흐름도"
+    },
+    {
+      "id": "parse",
+      "lane": "offline",
+      "col": 1,
+      "type": "backend",
+      "label": "2 파싱",
+      "sublabel": "PyMuPDF · HTML 파서",
+      "tag": "표 · 소제목 보존"
+    },
+    {
+      "id": "chunk",
+      "lane": "offline",
+      "col": 2,
+      "type": "backend",
+      "label": "3 청킹",
+      "sublabel": "행 단위 · 머리글 반복",
+      "tag": "요약 · 예상질문 메타"
+    },
+    {
+      "id": "embed",
+      "lane": "offline",
+      "col": 3,
+      "type": "cloud",
+      "label": "4 임베딩",
+      "sublabel": "bge-m3 · 양자화"
+    },
+    {
+      "id": "index",
+      "lane": "offline",
+      "col": 4,
+      "type": "database",
+      "label": "5 인덱스",
+      "sublabel": "Elasticsearch 매핑",
+      "tag": "text + dense_vector"
+    },
+    {
+      "id": "query",
+      "lane": "online",
+      "col": 3,
+      "type": "external",
+      "label": "사용자 질문",
+      "icon": "person"
+    },
+    {
+      "id": "retrieve",
+      "lane": "online",
+      "col": 4,
+      "type": "backend",
+      "label": "6 검색",
+      "sublabel": "BM25 + 벡터 → RRF",
+      "tag": "하이브리드"
+    },
+    {
+      "id": "generate",
+      "lane": "online",
+      "col": 5,
+      "type": "cloud",
+      "label": "7 생성",
+      "sublabel": "근거 청크 + 프롬프트 → 답 + 출처"
+    },
+    {
+      "id": "evalset",
+      "lane": "eval",
+      "col": 3,
+      "type": "database",
+      "label": "평가셋",
+      "sublabel": "질문 · 정답 · 근거 문서"
+    },
+    {
+      "id": "evaluate",
+      "lane": "eval",
+      "col": 5,
+      "type": "security",
+      "label": "8 평가",
+      "sublabel": "Hit@k · MRR · LLM 심판",
+      "tag": "게이트"
+    },
+    {
+      "id": "cache",
+      "lane": "ops",
+      "col": 5,
+      "type": "database",
+      "label": "9 운영",
+      "sublabel": "호출 캐시 · 재처리 배치"
+    }
+  ],
+  "edges": [
+    {
+      "id": "e2",
+      "from": "collect",
+      "to": "parse"
+    },
+    {
+      "id": "e3",
+      "from": "parse",
+      "to": "chunk",
+      "label": "텍스트 · 표",
+      "variant": "emphasis"
+    },
+    {
+      "id": "e4",
+      "from": "chunk",
+      "to": "embed"
+    },
+    {
+      "id": "e5",
+      "from": "embed",
+      "to": "index",
+      "label": "벡터 + 본문 적재",
+      "variant": "emphasis"
+    },
+    {
+      "id": "e6",
+      "from": "query",
+      "to": "retrieve",
+      "label": "질의"
+    },
+    {
+      "id": "e7",
+      "from": "index",
+      "to": "retrieve",
+      "label": "후보 k개"
+    },
+    {
+      "id": "e8",
+      "from": "retrieve",
+      "to": "generate",
+      "label": "근거 청크"
+    },
+    {
+      "id": "e10",
+      "from": "evalset",
+      "to": "evaluate",
+      "label": "질문 투입",
+      "variant": "dashed",
+      "role": "async"
+    },
+    {
+      "id": "e12",
+      "from": "evaluate",
+      "to": "cache",
+      "label": "통과 · 운영"
+    },
+    {
+      "id": "e13",
+      "from": "evaluate",
+      "to": "parse",
+      "label": "점수 낮음 → 재검토",
+      "variant": "security",
+      "role": "error"
+    },
+    {
+      "id": "e11",
+      "from": "generate",
+      "to": "evaluate",
+      "label": "채점",
+      "variant": "dashed",
+      "role": "branch"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "꼭 지킬 것",
+      "items": [
+        "평가셋을 먼저 만들고 바꿀 때마다 같은 셋으로 비교",
+        "표 앞 소제목과 머리글을 청크 안에 남긴다"
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "흔한 실수",
+      "items": [
+        "청크 크기 초과로 표가 잘려 수치 질문이 틀림",
+        "외부 LLM 수천 회 호출을 캐시 없이 돌려 중단 시 재과금"
+      ]
+    }
+  ]
+}

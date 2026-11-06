@@ -1,0 +1,331 @@
+{
+  "schema_version": 2,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "데이터 파이프라인 구축 흐름",
+    "subtitle": "요구 정의부터 서빙까지 7단계. 단계를 클릭하면 설명이 열립니다.",
+    "locale": "ko",
+    "quality_profile": "showcase",
+    "output": "docs/learn/flows/de-pipeline.html",
+    "legend": {
+      "entries": {
+        "external": {
+          "label": "입력 · 요구"
+        },
+        "backend": {
+          "label": "처리 단계"
+        },
+        "database": {
+          "label": "저장"
+        },
+        "messagebus": {
+          "label": "오케스트레이션"
+        },
+        "security": {
+          "label": "품질 게이트"
+        },
+        "frontend": {
+          "label": "서빙"
+        }
+      }
+    },
+    "views": [
+      {
+        "id": "v-define",
+        "label": "1. 요구 정의",
+        "focus": [
+          "req"
+        ],
+        "note": "무엇을, 얼마나 자주, 어떤 지연으로 필요한지 먼저 적는다."
+      },
+      {
+        "id": "v-ingest",
+        "label": "2-3. 수집과 적재",
+        "focus": [
+          "src",
+          "ingest",
+          "raw"
+        ],
+        "note": "원본을 바꾸지 않고 Raw에 그대로 둔다. 재처리의 출발점이다."
+      },
+      {
+        "id": "v-transform",
+        "label": "4-5. 변환과 오케스트레이션",
+        "focus": [
+          "transform",
+          "marts",
+          "orch"
+        ],
+        "note": "변환은 멱등하게, 실행 순서와 재시도는 스케줄러가 맡는다."
+      },
+      {
+        "id": "v-quality",
+        "label": "6. 품질 · 모니터링",
+        "focus": [
+          "quality",
+          "alert",
+          "transform"
+        ],
+        "note": "건수·널·신선도 검사. 이상이면 변환부터 재처리한다."
+      },
+      {
+        "id": "v-serve",
+        "label": "7. 서빙",
+        "focus": [
+          "serve",
+          "consumer"
+        ],
+        "note": "API·대시보드·테이블로 내보낸다. 소비자가 읽는 형태가 최종 산출물이다."
+      }
+    ]
+  },
+  "lanes": [
+    {
+      "id": "plan",
+      "label": "요구"
+    },
+    {
+      "id": "data",
+      "label": "데이터 흐름"
+    },
+    {
+      "id": "ops",
+      "label": "운영 · 품질",
+      "variant": "exception"
+    },
+    {
+      "id": "out",
+      "label": "소비"
+    }
+  ],
+  "phases": [
+    {
+      "id": "p1",
+      "label": "정의 · 수집 · 적재",
+      "fromCol": 0,
+      "toCol": 2
+    },
+    {
+      "id": "p2",
+      "label": "변환 · 운영",
+      "fromCol": 3,
+      "toCol": 4,
+      "variant": "emphasis"
+    },
+    {
+      "id": "p3",
+      "label": "서빙 · 알림",
+      "fromCol": 5,
+      "toCol": 5,
+      "variant": "dashed"
+    }
+  ],
+  "mainPath": [
+    "req",
+    "src",
+    "ingest",
+    "raw",
+    "transform",
+    "marts",
+    "quality",
+    "serve",
+    "consumer"
+  ],
+  "nodes": [
+    {
+      "id": "req",
+      "lane": "plan",
+      "col": 0,
+      "type": "external",
+      "label": "1 요구 정의",
+      "sublabel": "지표 · 주기 · 지연 허용",
+      "icon": "flag"
+    },
+    {
+      "id": "src",
+      "lane": "data",
+      "col": 0,
+      "type": "external",
+      "label": "원천",
+      "sublabel": "웹 · API · DB · 로그"
+    },
+    {
+      "id": "ingest",
+      "lane": "data",
+      "col": 1,
+      "type": "backend",
+      "label": "2 수집",
+      "sublabel": "Scrapy · API · CDC · Kafka",
+      "tag": "증분 · 재시도"
+    },
+    {
+      "id": "raw",
+      "lane": "data",
+      "col": 2,
+      "type": "database",
+      "label": "3 적재 Raw",
+      "sublabel": "S3 · JSONL · jsonb",
+      "tag": "원본 그대로"
+    },
+    {
+      "id": "transform",
+      "lane": "data",
+      "col": 3,
+      "type": "backend",
+      "label": "4 변환",
+      "sublabel": "SQL · Spark · pandas",
+      "tag": "멱등"
+    },
+    {
+      "id": "marts",
+      "lane": "data",
+      "col": 4,
+      "type": "database",
+      "label": "정제 테이블",
+      "sublabel": "Staging → Marts"
+    },
+    {
+      "id": "orch",
+      "lane": "ops",
+      "col": 1,
+      "type": "messagebus",
+      "label": "5 오케스트레이션",
+      "sublabel": "Airflow DAG · 스케줄",
+      "tag": "순서 · 재시도 · 알림"
+    },
+    {
+      "id": "quality",
+      "lane": "ops",
+      "col": 4,
+      "type": "security",
+      "label": "6 품질 검사",
+      "sublabel": "건수 · 널 · 신선도",
+      "tag": "게이트"
+    },
+    {
+      "id": "alert",
+      "lane": "ops",
+      "col": 5,
+      "type": "security",
+      "label": "이상 알림",
+      "sublabel": "Kibana · 알림톡 · Slack"
+    },
+    {
+      "id": "serve",
+      "lane": "out",
+      "col": 4,
+      "type": "frontend",
+      "label": "7 서빙",
+      "sublabel": "API · 대시보드 · 테이블"
+    },
+    {
+      "id": "consumer",
+      "lane": "out",
+      "col": 5,
+      "type": "external",
+      "label": "소비자",
+      "sublabel": "분석가 · 서비스 · 모델",
+      "icon": "person"
+    }
+  ],
+  "edges": [
+    {
+      "id": "e-req-src",
+      "from": "req",
+      "to": "src",
+      "label": "무엇을 모을지"
+    },
+    {
+      "id": "e-src-ingest",
+      "from": "src",
+      "to": "ingest"
+    },
+    {
+      "id": "e-ingest-raw",
+      "from": "ingest",
+      "to": "raw",
+      "label": "원본 저장",
+      "variant": "emphasis"
+    },
+    {
+      "id": "e-raw-transform",
+      "from": "raw",
+      "to": "transform"
+    },
+    {
+      "id": "e-transform-marts",
+      "from": "transform",
+      "to": "marts",
+      "label": "정제 · 모델링",
+      "variant": "emphasis"
+    },
+    {
+      "id": "e-orch-ingest",
+      "from": "orch",
+      "to": "ingest",
+      "label": "스케줄 실행",
+      "variant": "dashed",
+      "role": "async"
+    },
+    {
+      "id": "e-orch-transform",
+      "from": "orch",
+      "to": "transform",
+      "label": "실행",
+      "variant": "dashed",
+      "role": "async"
+    },
+    {
+      "id": "e-marts-quality",
+      "from": "marts",
+      "to": "quality",
+      "label": "검사"
+    },
+    {
+      "id": "e-quality-serve",
+      "from": "quality",
+      "to": "serve",
+      "label": "통과",
+      "variant": "emphasis"
+    },
+    {
+      "id": "e-quality-alert",
+      "from": "quality",
+      "to": "alert",
+      "label": "실패",
+      "variant": "security",
+      "role": "error"
+    },
+    {
+      "id": "e-alert-transform",
+      "from": "alert",
+      "to": "transform",
+      "label": "재처리",
+      "variant": "dashed",
+      "role": "return"
+    },
+    {
+      "id": "e-serve-consumer",
+      "from": "serve",
+      "to": "consumer"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "꼭 지킬 것",
+      "items": [
+        "Raw는 원본 그대로, 변환은 다시 돌려도 같은 결과",
+        "실패는 알림으로 드러나야 하고 조용히 0건이면 안 된다"
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "흔한 실수",
+      "items": [
+        "now() 기준 추출로 재실행 시 결과가 달라짐",
+        "품질 검사 없이 서빙해 소비자가 먼저 이상을 발견"
+      ]
+    }
+  ]
+}

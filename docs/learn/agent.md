@@ -4,16 +4,9 @@ LLM이 도구(SQL 실행, 검색, API 호출)를 골라 쓰며 여러 단계로 
 
 ## 전체 흐름 { #overview }
 
-```mermaid
-flowchart LR
-    A[1 목표 및 도구 정의] --> B[2 상태와 그래프 설계]
-    B --> C[3 계획 및 라우팅]
-    C --> D[4 도구 실행]
-    D --> E[5 검증 및 재시도]
-    E -->|실패| C
-    E -->|통과| F[6 관측 및 평가]
-    F -.->|개선| A
-```
+<iframe src="flows/agent.html" title="에이전트 구축 흐름 인터랙티브 다이어그램" loading="lazy" style="width:100%;height:640px;border:1px solid var(--md-default-fg-color--lightest);border-radius:6px;background:transparent"></iframe>
+
+[전체 화면으로 열기](flows/agent.html){ target=_blank } · 단계 상자를 클릭하면 연결이 강조되고, 위쪽 보기 메뉴로 단계 묶음을 차례로 따라갈 수 있습니다.
 
 에이전트의 품질은 모델보다 도구 설계와 검증 단계에서 크게 갈린다. 처음에는 고정된 순서의 파이프라인으로 시작하고, 정말 분기가 필요한 곳에만 LLM 판단을 넣는 편이 디버깅이 쉽다.
 
