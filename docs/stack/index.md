@@ -12,3 +12,13 @@
 | MongoDB | 저장소 | Scrapy 기반 데이터 수집 Pipeline, 외부 소스 수집 워크플로우 (서브 프로젝트), 데이터 수집 · 감성 분석 대시보드 운영 | [MongoDB](storage/mongodb.md) |
 | Elasticsearch | 저장소 | 지식기반 검색 RAG 파이프라인, 데이터 수집 · 감성 분석 대시보드 운영 | [Elasticsearch](storage/elasticsearch.md) |
 | S3 · Hive · Parquet | 저장소 | Backpacker (개인, Spark 배치), 데이터 수집 API · ETL 파이프라인 (S3) | [S3 · Hive · Parquet](storage/s3-hive-parquet.md) |
+| ETL · ELT · 계층 | 데이터 모델링 | DW ELT, User Behavior DW, 데이터 수집 API · ETL | [ETL · ELT와 계층](modeling/etl-elt-layers.md) |
+| Dim · Fact · SCD | 데이터 모델링 | DW ELT, User Behavior DW | [Dim · Fact · SCD](modeling/dim-fact-scd.md) |
+| 웹 스크래핑 | 수집 | Scrapy 도서 수집, 데이터 수집 API · ETL, NLP 텍스트 처리 | [웹 스크래핑](ingestion/scraping.md) |
+| FastAPI · Django | 서빙 | Smart Factory, 데이터 수집 API · ETL, 외부 소스 수집, 올리브영 클론 | [FastAPI · Django](serving/fastapi-django.md) |
+| Streamlit · SQLAlchemy · Pydantic | 서빙 | Smart Factory, 올리브영 클론 | [Streamlit · SQLAlchemy · Pydantic](serving/streamlit-sqlalchemy-pydantic.md) |
+| Docker · Compose | 인프라 | DW ELT, User Behavior DW, NLP 텍스트 처리, Backpacker, 올리브영 클론 | [Docker · Compose](infra/docker.md) |
+| Kubernetes · ECK | 인프라 | 지식기반 검색 RAG | [Kubernetes · ECK](infra/kubernetes.md) |
+| Kibana | 인프라 | 감성 분석 대시보드, 지식기반 검색 RAG | [Kibana](infra/kibana.md) |
+| GitHub Actions | 인프라 | 이 사이트 배포, 숏폼 영상 생성 | [GitHub Actions](infra/github-actions.md) |
+| PDF · HTML 표 처리 | 문서 처리 | 지식기반 검색 RAG | [PDF · HTML 표 처리](docs/pdf-html-tables.md) |

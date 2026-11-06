@@ -56,6 +56,21 @@ nav:
           - stack/storage/mongodb.md
           - stack/storage/elasticsearch.md
           - stack/storage/s3-hive-parquet.md
+      - 데이터 모델링:
+          - stack/modeling/etl-elt-layers.md
+          - stack/modeling/dim-fact-scd.md
+      - 수집:
+          - stack/ingestion/scraping.md
+      - 서빙:
+          - stack/serving/fastapi-django.md
+          - stack/serving/streamlit-sqlalchemy-pydantic.md
+      - 인프라:
+          - stack/infra/docker.md
+          - stack/infra/kubernetes.md
+          - stack/infra/kibana.md
+          - stack/infra/github-actions.md
+      - 문서 처리:
+          - stack/docs/pdf-html-tables.md
   - 학습 워크플로우: learn/index.md
   - 내 프로젝트: projects/index.md
   - 예상질문:
@@ -63,3 +78,6 @@ nav:
       - interview/orchestration.md
       - interview/processing-streaming.md
       - interview/storage.md
+      - interview/modeling.md
+      - interview/ingestion.md
+      - interview/serving-infra.md
