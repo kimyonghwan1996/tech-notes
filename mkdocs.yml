@@ -42,7 +42,24 @@ markdown_extensions:
 exclude_docs: |
   superpowers/
 nav:
-  - 기술 스택: stack/index.md
+  - 기술 스택:
+      - stack/index.md
+      - 오케스트레이션:
+          - stack/orchestration/airflow.md
+      - 처리·스트리밍:
+          - stack/processing/spark.md
+          - stack/processing/kafka.md
+      - 메시징·캐시:
+          - stack/messaging/rabbitmq-redis.md
+      - 저장소:
+          - stack/storage/postgresql.md
+          - stack/storage/mongodb.md
+          - stack/storage/elasticsearch.md
+          - stack/storage/s3-hive-parquet.md
   - 학습 워크플로우: learn/index.md
   - 내 프로젝트: projects/index.md
-  - 예상질문: interview/index.md
+  - 예상질문:
+      - interview/index.md
+      - interview/orchestration.md
+      - interview/processing-streaming.md
+      - interview/storage.md
