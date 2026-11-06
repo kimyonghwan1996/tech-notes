@@ -39,6 +39,8 @@ markdown_extensions:
   - tables
   - toc:
       permalink: true
+validation:
+  anchors: warn
 exclude_docs: |
   superpowers/
 nav:
@@ -89,6 +91,7 @@ nav:
   - 내 프로젝트: projects/index.md
   - 예상질문:
       - interview/index.md
+      - interview/general.md
       - interview/orchestration.md
       - interview/processing-streaming.md
       - interview/storage.md
