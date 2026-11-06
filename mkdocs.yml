@@ -71,6 +71,15 @@ nav:
           - stack/infra/github-actions.md
       - 문서 처리:
           - stack/docs/pdf-html-tables.md
+      - LLM · RAG:
+          - stack/llm/langchain-langgraph.md
+          - stack/llm/embeddings.md
+          - stack/llm/chunking.md
+          - stack/llm/hybrid-search.md
+          - stack/llm/rag-evaluation.md
+          - stack/llm/nl2sql.md
+          - stack/llm/vlm.md
+          - stack/llm/llm-apis.md
   - 학습 워크플로우: learn/index.md
   - 내 프로젝트: projects/index.md
   - 예상질문:
@@ -81,3 +90,5 @@ nav:
       - interview/modeling.md
       - interview/ingestion.md
       - interview/serving-infra.md
+      - interview/llm-rag.md
+      - interview/agent.md

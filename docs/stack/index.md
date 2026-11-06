@@ -22,3 +22,11 @@
 | Kibana | 인프라 | 감성 분석 대시보드, 지식기반 검색 RAG | [Kibana](infra/kibana.md) |
 | GitHub Actions | 인프라 | 이 사이트 배포, 숏폼 영상 생성 | [GitHub Actions](infra/github-actions.md) |
 | PDF · HTML 표 처리 | 문서 처리 | 지식기반 검색 RAG | [PDF · HTML 표 처리](docs/pdf-html-tables.md) |
+| LangChain · LangGraph | LLM · RAG | 데이터 수집 API · ETL, 해외 법령, LLM & Agent 실습 | [LangChain · LangGraph](llm/langchain-langgraph.md) |
+| 임베딩 | LLM · RAG | 지식기반 검색 RAG, 올리브영 클론 | [임베딩](llm/embeddings.md) |
+| 청킹 | LLM · RAG | 지식기반 검색 RAG | [청킹](llm/chunking.md) |
+| 하이브리드 검색 | LLM · RAG | 지식기반 검색 RAG | [하이브리드 검색](llm/hybrid-search.md) |
+| RAG 평가 | LLM · RAG | 지식기반 검색 RAG | [RAG 평가](llm/rag-evaluation.md) |
+| NL2SQL | LLM · RAG | Smart Factory | [NL2SQL](llm/nl2sql.md) |
+| VLM | LLM · RAG | 지식기반 검색 RAG, 숏폼 영상 생성 | [VLM](llm/vlm.md) |
+| LLM API | LLM · RAG | 지식기반 검색 RAG, 데이터 수집 API · ETL, Smart Factory, 숏폼 영상 생성, 올리브영 클론, LLM & Agent 실습 | [LLM API](llm/llm-apis.md) |
